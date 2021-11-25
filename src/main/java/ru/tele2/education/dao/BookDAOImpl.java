@@ -36,7 +36,6 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public void dataExtraction() {
-
     }
 
     @Override
