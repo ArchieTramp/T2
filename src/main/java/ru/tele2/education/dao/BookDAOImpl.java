@@ -47,8 +47,10 @@ public class BookDAOImpl implements BookDAO {
 
     public static final String DELETE_FROM_TABLE = "DELETE FROM salebook WHERE ?=?";
 
-    public static final String SELECT_DATA = "CREATE TABLE handbook\n" + "SELECT region, country, itemType, salesChannel, orderPriority INTO handbook " +
-            "FROM salebook";
+    public static final String SELECT_DATA = "DROP TABLE IF EXISTS handbook;\n"
+            + "CREATE TABLE handbook\n"
+            + "SELECT region, country, itemType, salesChannel, orderPriority INTO handbook "
+            + "FROM salebook";
     public static final String DATA_CHECK = "SELECT ? FROM handbook WHERE ? = ?";
     public static final String SUM = "SELECT totalProfit INTO summa FROM salebook WHERE ?=?\n"
             + "SELECT SUM(totalProfit) FROM summa";
@@ -85,9 +87,9 @@ public class BookDAOImpl implements BookDAO {
                 preparedStatement.setString(3, bookPOJO.getItemType());
                 preparedStatement.setString(4, bookPOJO.getSalesChannel());
                 preparedStatement.setString(5, bookPOJO.getOrderPriority());
-                preparedStatement.setDate(6, bookPOJO.getOrderDate());
+                preparedStatement.setDate(6, Date.valueOf(bookPOJO.getOrderDate()));
                 preparedStatement.setLong(7, bookPOJO.getOrderID());
-                preparedStatement.setDate(8, bookPOJO.getShipDate());
+                preparedStatement.setDate(8, Date.valueOf(bookPOJO.getShipDate()));
                 preparedStatement.setInt(9, bookPOJO.getUnitsSold());
                 preparedStatement.setDouble(10, bookPOJO.getUnitPrice());
                 preparedStatement.setDouble(11, bookPOJO.getUnitCost());
@@ -235,13 +237,14 @@ public class BookDAOImpl implements BookDAO {
                 count = preparedStatement.executeUpdate();
                 if (count > 0) {
                     calculate++;
-                }
-                else {
+                } else {
                     System.out.println("Don't find element " + entry.getKey() + " equals " + entry.getValue() + " in catalog");
                     break;
                 }
             }
-            if (calculate > 5) {state = true;}
+            if (calculate > 5) {
+                state = true;
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

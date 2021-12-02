@@ -11,9 +11,9 @@ public class BookPOJO {
     private String itemType;
     private String salesChannel;
     private String orderPriority;
-    private Date orderDate;
-    private Long orderID;
-    private Date shipDate;
+    private String orderDate;
+    private long orderID;
+    private String shipDate;
     private int unitsSold;
     private double unitPrice;
     private double unitCost;
