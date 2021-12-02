@@ -12,7 +12,7 @@ public class BookPOJO {
     private String salesChannel;
     private String orderPriority;
     private String orderDate;
-    private long orderID;
+    private int orderID;
     private String shipDate;
     private int unitsSold;
     private double unitPrice;

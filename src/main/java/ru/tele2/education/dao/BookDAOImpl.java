@@ -21,43 +21,54 @@ public class BookDAOImpl implements BookDAO {
     public static final String CREATE_TABLE
             = "DROP TABLE IF EXISTS salebook;\n"
             + "CREATE TABLE salebook\n"
-            + "SET DATEFORMAT mdy\n"
             + "(\n"
-            + "     id bigserial not null\n"
-            + "         constraint salebook_pkey\n"
-            + "             primary key, \n"
+            + "id bigserial not null\n"
+            + "constraint salebook_pkey\n"
+            + "primary key, \n"
             + "     region varchar(100) not null, \n"
             + "     country varchar(100) not null, \n"
             + "     itemType varchar(100) not null, \n"
             + "     salesChannel varchar(100) not null, \n"
             + "     orderPriority varchar(100) not null, \n"
             + "     orderDate date not null, \n"
-            + "     orderId long not null, \n"
+            + "     orderId int not null, \n"
             + "     shipDate date not null, \n"
             + "     unitsSold integer not null, \n"
-            + "     unitPrice double not null, \n"
-            + "     unitCost double not null, \n"
-            + "     totalRevenue double not null, \n"
-            + "     totalCost double not null, \n"
-            + "     totalProfit double not null, \n"
+            + "     unitPrice double precision not null, \n"
+            + "     unitCost double precision not null, \n"
+            + "     totalRevenue double precision not null, \n"
+            + "     totalCost double precision not null, \n"
+            + "     totalProfit double precision not null \n"
             + ");\n";
 
     public static final String INSERT_DATA = "INSERT INTO salebook (region, country, itemType, salesChannel, " +
             "orderPriority, orderDate, orderId, shipDate, unitsSold, unitPrice, unitCost, totalRevenue, totalCost, totalProfit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public static final String DELETE_FROM_TABLE = "DELETE FROM salebook WHERE ?=?";
+    public static final String DELETE_FROM_TABLE = "DELETE FROM salebook WHERE ? = ?";
 
-    public static final String SELECT_DATA = "DROP TABLE IF EXISTS handbook;\n"
-            + "CREATE TABLE handbook\n"
-            + "SELECT region, country, itemType, salesChannel, orderPriority INTO handbook "
-            + "FROM salebook";
+    public static final String SELECT_DATA =
+            "DROP TABLE IF EXISTS handbook;\n"
+                    + "CREATE TABLE handbook\n"
+                    + "(\n"
+                    + "id bigserial not null\n"
+                    + "constraint handbook_pkey\n"
+                    + "primary key, \n"
+                    + "     region varchar(100) not null, \n"
+                    + "     country varchar(100) not null, \n"
+                    + "     itemType varchar(100) not null, \n"
+                    + "     salesChannel varchar(100) not null, \n"
+                    + "     orderPriority varchar(100) not null \n"
+                    + ");"
+                    + "SELECT region, country, itemType, salesChannel, orderPriority INTO handbook "
+                    + "FROM salebook";
     public static final String DATA_CHECK = "SELECT ? FROM handbook WHERE ? = ?";
-    public static final String SUM = "SELECT totalProfit INTO summa FROM salebook WHERE ?=?\n"
+    public static final String SUM = "SELECT totalProfit INTO summa FROM salebook WHERE ? = ?;\n"
             + "SELECT SUM(totalProfit) FROM summa";
-    public static final String REPORT_AVG = "CREATE VIEW report AS \n"
-            + "SELECT orderDate, shipDate INTO tempbook FROM ?=?\n"
-            + "INSERT INTO tempbook (dateDiff) VALUE (EXTRACT(DAY FROM TO_TIMESTAMP(shipDate)-TO_TIMESTAMP(orderDate)) AS different"
-            + "SELECT AVG(different) FROM report";
+    public static final String REPORT_AVG =
+                    "CREATE VIEW report AS \n"
+                    + "SELECT orderDate, shipDate INTO tempbook FROM salebook WHERE ? = ?;\n"
+                    + "INSERT INTO tempbook (dateDiff) VALUES (EXTRACT(DAY FROM TO_TIMESTAMP(shipDate)-TO_TIMESTAMP(orderDate)));"
+                    + "SELECT AVG(dateDiff) INTO report FROM tempbook";
 
     @Override
     public boolean createBook() {
@@ -88,7 +99,7 @@ public class BookDAOImpl implements BookDAO {
                 preparedStatement.setString(4, bookPOJO.getSalesChannel());
                 preparedStatement.setString(5, bookPOJO.getOrderPriority());
                 preparedStatement.setDate(6, Date.valueOf(bookPOJO.getOrderDate()));
-                preparedStatement.setLong(7, bookPOJO.getOrderID());
+                preparedStatement.setInt(7, bookPOJO.getOrderID());
                 preparedStatement.setDate(8, Date.valueOf(bookPOJO.getShipDate()));
                 preparedStatement.setInt(9, bookPOJO.getUnitsSold());
                 preparedStatement.setDouble(10, bookPOJO.getUnitPrice());
@@ -142,8 +153,8 @@ public class BookDAOImpl implements BookDAO {
                 preparedStatement.setString(5, orderPriority);
                 preparedStatement.setDate(6, Date.valueOf(orderDate));
 
-                long orderIdLong = Long.parseLong(orderId);
-                preparedStatement.setLong(7, orderIdLong);
+                int orderIdInt = Integer.parseInt((orderId));
+                preparedStatement.setInt(7, orderIdInt);
 
                 preparedStatement.setDate(8, Date.valueOf(shipDate));
 
