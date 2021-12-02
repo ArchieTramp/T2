@@ -2,6 +2,8 @@ package ru.tele2.education.pojo;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 @Data
 public class BookPOJO {
     private String region;
@@ -9,9 +11,9 @@ public class BookPOJO {
     private String itemType;
     private String salesChannel;
     private String orderPriority;
-    private String orderDate;
+    private Date orderDate;
     private Long orderID;
-    private String shipDate;
+    private Date shipDate;
     private int unitsSold;
     private double unitPrice;
     private double unitCost;

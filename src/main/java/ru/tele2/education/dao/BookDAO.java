@@ -4,10 +4,11 @@ import ru.tele2.education.pojo.BookPOJO;
 
 public interface BookDAO {
     boolean createBook();
-    boolean addBook(BookPOJO bookPOJO);
-    boolean deleteBook();
-    void dataExtraction();
-    void dataChecking();
-    void sumSale();
-    void reportAvgTime();
+    boolean addIntoBook(BookPOJO bookPOJO);
+    boolean insertCSV();
+    boolean deleteBook(String parameter, String value);
+    boolean dataExtraction();
+    boolean dataChecking(BookPOJO bookPOJO);
+    void sumSale(String parameter, String value);
+    boolean reportAvgTime(String parameter, String value);
 }
